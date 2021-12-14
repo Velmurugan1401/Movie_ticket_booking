@@ -19,7 +19,7 @@ const movieSchema = new Schema({
   },
   genre: {
     type: String,
-    required: true,
+    required: false,
     trim: true,
     lowercase: true,
   },
@@ -53,6 +53,14 @@ const movieSchema = new Schema({
     type: Date,
     required: true,
   },
+  createddate: {
+    type: Date,
+    default: Date.now, //default mean when the date not include the user insert data it taken the default time of system
+  },
+  lastupdateddate: {
+      type: Date,
+      default: Date.now,
+    },
 });
 
 const Movie = mongoose.model('Movie', movieSchema);

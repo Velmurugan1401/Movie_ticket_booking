@@ -3,9 +3,12 @@ const router = express.Router()  // it is a framwork help to create the router h
 const Apiroute = router
 const jwt = require('jsonwebtoken'); //jsonwebtoken it securely transmitting information between parties as a json 
 const user = require('./user')
+const movie = require('./movies')
 const Conf = require('../conf')
 const env = require('dotenv').config()  //import config modal to access the datas of config modal
-var User = new user() //craete user object module 
+const User = new user() //craete user object module 
+const Movie = new movie()
+
 
 //check the session for user login or not sessiontime out check
 var Sessioncheck =async function (req, res, next) {
@@ -51,5 +54,12 @@ Apiroute.post('/signin',function(req,res){
 Apiroute.post('/user/:action',Sessioncheck,function(req,res){ //sessioncheck goto the function check the session true execute the function
     User.perforam(req,res)
 })
+
+// Movie crud apis
+Apiroute.post('/movie/:action',Sessioncheck,function(req,res){ //sessioncheck goto the function check the session true execute the function
+    Movie.perforam(req,res)
+})
+
+
 
 module.exports = Apiroute // export modue to access other files inside

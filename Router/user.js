@@ -6,7 +6,7 @@ const Conf = require('../conf')
 //this is the object modal 
 var user = function(){
     this.table = Tables;
-    this.conf = new Conf
+    this.conf = Conf
 }
 
 
