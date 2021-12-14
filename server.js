@@ -6,6 +6,7 @@ const conf = require('./conf') // import conf js to access datas inside of confi
 const apiroute = require('./Router/auth')
 const session = require('express-session') //HTTP server-side framework used to create and manage a session middleware
 require('dotenv').config()
+const path = require('path');
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -27,9 +28,14 @@ mongoose.connect(conf.DB,function(err,success){ //connect mongodb using mongoose
     }
 })
  
-app.use('/',apiroute) // is use to execute any specific query at intilization process it route the page
+app.use('/api',apiroute) // is use to execute any specific query at intilization process it route the page
 
+app.use(express.static(path.join(__dirname, '/view/build')));
 
+// Handles any requests that don't match the ones above
+app.get('*', (req,res) =>{
+    res.sendFile(path.join(__dirname+'/view/build/index.html'));
+});
 app.listen(conf.PORTNUMBER||4000,function(err){  //Listen connect host or port , This method is identical to Node’s http.Server.listen()
     if(err) return res.json({status:false,result:"error in list port"})  // if connect failed it return this respose
     else console.log('http://localhost:'+conf.PORTNUMBER)
