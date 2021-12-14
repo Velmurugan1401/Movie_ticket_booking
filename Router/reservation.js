@@ -1,14 +1,14 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs'); //is a secured way to store passwords in my database
-const Tables = require('../Module/movie');
+const Tables = require('../Module/reservation');
 
 
-var Movie = function(){
+var Reservation = function(){
     this.table = Tables;
 }
 
 
-Movie.prototype.perforam = function(req,res){  //prototype is an object that is associated with every functions and objects by default ,Prototype is the mechanism by which Js objects inherit features from one another
+Reservation.prototype.perforam = function(req,res){  //prototype is an object that is associated with every functions and objects by default ,Prototype is the mechanism by which Js objects inherit features from one another
     var expression = req.params.action // is getting params values in url
     switch(expression) {
         case 'add':
@@ -29,15 +29,12 @@ Movie.prototype.perforam = function(req,res){  //prototype is an object that is 
 
 }
 
-Movie.prototype.Insert =async function(req,res){
+Reservation.prototype.Insert =async function(req,res){
     var reqObj = req.body
-    
-    if(reqObj && reqObj.name && reqObj.language && reqObj.duration && reqObj.endDate && reqObj.releaseDate){
-        if (await this.table.findOne({ name: reqObj.name })) {  //this method also same to find 
-            res.json({status:false,result:"Movie already exixts"})
-        }else{
+    reqObj['userId'] =req.session['sessionObj'].userId
+    if(reqObj && reqObj.movieId){
                 try {
-                  
+                      
                     const user = new this.table(reqObj);
                     const savedUser = await user.save() .then(data=>{  //store data from db 
                         res.json({ status: true, result: data });
@@ -46,29 +43,22 @@ Movie.prototype.Insert =async function(req,res){
                 } catch (error) {
                     res.status(400).json({ error });
                 }
-            
-        }
-
-
     }else{
         res.json({status:false,result:'please file required filed!'})
     }
 } 
 
-Movie.prototype.update = function(req,res){
+Reservation.prototype.update = function(req,res){
     var reqObj = req.body
+    reqObj['userId'] =req.session['sessionObj'].userId
     if( reqObj._id){
-        this.table.find({_id:reqObj._id}, function(err, users) { //find the paticular movie and upadte that movie
+        this.table.find({_id:reqObj._id}, function(err, users) { //find the paticular Reservation and upadte that Reservation
             var user = users[0]
             if(err) {
                 res.status(404).json({"status":false,'result':err})
             }else if(user.length>0) {
                 var updateObj = user
-                updateObj['name'] = reqObj.name ? reqObj.name:user.name
-                updateObj['image'] = reqObj.image ? reqObj.image :user.image
-                updateObj['endDate'] = reqObj.endDate ? reqObj.endDate :user.endDate
-                updateObj['duration'] = reqObj.duration ? reqObj.duration :user.duration
-                updateObj['createddate'] =  user.createddate
+     
                 updateObj['lastupdateddate'] = new Date()
                 delete updateObj['_id']
                 this.table.update({_id: user._id},updateObj , function(err,rawResponse) {
@@ -78,7 +68,7 @@ Movie.prototype.update = function(req,res){
                 })
                 
             }else{
-                res.json({status:false,result:"Movie Not Found!"}) 
+                res.json({status:false,result:"Reservation Not Found!"}) 
             }
           });
     }else{
@@ -86,17 +76,17 @@ Movie.prototype.update = function(req,res){
     }
     
 }
-Movie.prototype.delete = function(req,res){
+Reservation.prototype.delete = function(req,res){
     if(req.body._id){
-        this.table.deleteOne({"_id":req.body._id},function(err,result){ //deleteone method to delete selected movie from db
+        this.table.deleteOne({"_id":req.body._id},function(err,result){ //deleteone method to delete selected Reservation from db
             if(err)return res.json({status:false,result:result})
-            else res.json({status:true,result:"Movie deleted successfully!"})
+            else res.json({status:true,result:"Reservation deleted successfully!"})
         })
     }
     
 }
 
-Movie.prototype.listall = function(req,res){
+Reservation.prototype.listall = function(req,res){
     this.table.find(req.body, function(err, users) { //it used to find the paticular data from mongodb it also used to list all the datas from db 
         if(err) return res.status(404).json({"status":false,'result':err})
         else res.json({status:true,result:users}) 
@@ -106,4 +96,4 @@ Movie.prototype.listall = function(req,res){
 
 
 
-module.exports = Movie
+module.exports = Reservation

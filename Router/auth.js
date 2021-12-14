@@ -46,7 +46,7 @@ Apiroute.post('/logout',function(req,res){
     User.Logout(req,res)
 })
 // craete new user 
-Apiroute.post('/signin',function(req,res){
+Apiroute.post('/signup',function(req,res){
     User.Insert(req,res)
 })
 

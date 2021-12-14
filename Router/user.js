@@ -46,13 +46,14 @@ user.prototype.Login =async function(req,res){
                     }else{
                         var payload = {
                             'name':results.name,
-                            'email':results.email,
+                            'email':results.email
                         
                         }
-                        var token = jwt.sign(payload, this.conf.KEY,{ expiresIn: '5h' }) //craete access token for an application and also set token expires time
+                        var token = jwt.sign(payload, Conf.KEY,{ expiresIn: '5h' }) //craete access token for an application and also set token expires time
                         var sessionObj = {
                             'name':results.name,
                             'email':results.email,
+                            'userId':results.userId,
                             "token":token
                         }
                         req.session['sessionObj'] = sessionObj //stroe the session 

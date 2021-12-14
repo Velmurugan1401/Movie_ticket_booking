@@ -2,17 +2,12 @@ const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
 const reservationSchema = new Schema({
-  date: {
+  dateandtime: {
     type: Date,
     required: true,
   },
-  startAt: {
-    type: String,
-    required: true,
-    trim: true,
-  },
   seats: {
-    type: [Schema.Types.Mixed],
+    type:String,
     required: true,
   },
   ticketPrice: {
@@ -20,34 +15,25 @@ const reservationSchema = new Schema({
     required: true,
   },
   total: {
-    type: Number,
-    required: true,
+    type: Number
   },
   movieId: {
-    type: Schema.Types.ObjectId,
-    ref: 'Movie',
-    required: true,
-  },
-  cinemaId: {
-    type: Schema.Types.ObjectId,
-    ref: 'Cinema',
+    type: String,
     required: true,
   },
   username: {
-    type: String,
-    required: true,
+    type: String
   },
   userId: {
     type: String,
     required: true,
   },
   phone: {
-    type: String,
-    required: true,
+    type: String
   },
-  checkin: {
-    type: Boolean,
-    default: false,
+  createddate: {
+    type: Date,
+    default: Date.now, //default mean when the date not include the user insert data it taken the default time of system
   },
 });
 
