@@ -39,8 +39,10 @@ export default class Login extends Component {
                  
                 //    UserProfile.setName(response)
                    if(response.status){
-                    window.location.href='/Home'
-                    console.log(response,"sucess")
+                    window.sessionStorage.setItem("token", response.result.token);
+                    window.sessionStorage.setItem("role", response.result.role);
+                        window.location.href='/Home'
+                    // console.log(.email,"sucess")
                    }
                    
                    // console.log(response)

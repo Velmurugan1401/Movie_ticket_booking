@@ -14,6 +14,10 @@ const userSchema = new mongoose.Schema({    //schema object
       max: 255,
       default: new Date().getTime()
     },
+    role: {  
+      type: String, //datatype
+      max: 255
+    },
     email: {
       type: String,
       required: true,

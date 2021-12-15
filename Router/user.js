@@ -54,7 +54,8 @@ user.prototype.Login =async function(req,res){
                             'name':results.name,
                             'email':results.email,
                             'userId':results.userId,
-                            "token":token
+                            "token":token,
+                            "role":results.role
                         }
                         req.session['sessionObj'] = sessionObj //stroe the session 
                         res.json({status:true,result:sessionObj})

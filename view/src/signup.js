@@ -24,9 +24,32 @@ export default class SignUp extends Component {
         if(!(this.state.email) || !validator.isEmail(this.state.email)){
             this.setState({email_err:'Eneter the valide emailid'})
         }else if(!(this.state.password) || !(validator.isStrongPassword(this.state.password, { minLength: 8, minLowercase: 1, minUppercase: 1, minNumbers: 1, minSymbols: 1 }))){
-            this.setState({password_err:'Enter the valide password'})
+            this.setState({password_err:'Password must contain one uppercase ,lowercase,one minSymbols,minimum length should be 8'})
         }else{
-            console.log(this.state.email)
+            var userobj={
+                email:this.state.emailid,
+                name:this.state.name,
+                password:this.state.password
+           }
+           const header=new Headers({'Content-Type':'application/json'});
+           const requestOptions = {
+               method: 'POST',
+               headers: header,
+               body: JSON.stringify(userobj)
+           };
+           fetch('http://localhost:2022/api/signup',requestOptions)
+           .then(response => response.json())
+           .then(response => {
+             
+            //    UserProfile.setName(response)
+               if(response.status){
+                    alert("User registerd successfully!")
+                    window.location.href='/'
+               }
+               
+               // console.log(response)
+           
+           })
         }
     }
     render() {

@@ -32,8 +32,8 @@ Movie.prototype.perforam = function(req,res){  //prototype is an object that is 
 Movie.prototype.Insert =async function(req,res){
     var reqObj = req.body
     
-    if(reqObj && reqObj.name && reqObj.language && reqObj.duration && reqObj.endDate && reqObj.releaseDate){
-        if (await this.table.findOne({ name: reqObj.name })) {  //this method also same to find 
+    if(reqObj && reqObj.title && reqObj.language && reqObj.duration && reqObj.endDate && reqObj.releaseDate){
+        if (await this.table.findOne({ title: reqObj.title })) {  //this method also same to find 
             res.json({status:false,result:"Movie already exixts"})
         }else{
                 try {

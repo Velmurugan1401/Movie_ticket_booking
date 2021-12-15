@@ -6,8 +6,16 @@ const reservationSchema = new Schema({
     type: Date,
     required: true,
   },
-  seats: {
-    type:String,
+  date: {
+    type: String,
+    required: true,
+  },
+  showtime: {
+    type: String,
+    required: true,
+  },
+  seatno: {
+    type:Number,
     required: true,
   },
   ticketPrice: {

@@ -32,11 +32,10 @@ Reservation.prototype.perforam = function(req,res){  //prototype is an object th
 Reservation.prototype.Insert =async function(req,res){
     var reqObj = req.body
     reqObj['userId'] =req.session['sessionObj'].userId
-    if(reqObj && reqObj.movieId){
+    if(reqObj && reqObj.movieId && reqObj.userId){
                 try {
-                      
                     const user = new this.table(reqObj);
-                    const savedUser = await user.save() .then(data=>{  //store data from db 
+                    const savedUser = user.save().then(data=>{  
                         res.json({ status: true, result: data });
                     })
                 
@@ -52,7 +51,7 @@ Reservation.prototype.update = function(req,res){
     var reqObj = req.body
     reqObj['userId'] =req.session['sessionObj'].userId
     if( reqObj._id){
-        this.table.find({_id:reqObj._id}, function(err, users) { //find the paticular Reservation and upadte that Reservation
+        this.table.find({_id:reqObj._id}, function(err, users) { 
             var user = users[0]
             if(err) {
                 res.status(404).json({"status":false,'result':err})
@@ -87,7 +86,7 @@ Reservation.prototype.delete = function(req,res){
 }
 
 Reservation.prototype.listall = function(req,res){
-    this.table.find(req.body, function(err, users) { //it used to find the paticular data from mongodb it also used to list all the datas from db 
+    this.table.findOne({_id:req.body._id}, function(err, users) { //it used to find the paticular data from mongodb it also used to list all the datas from db 
         if(err) return res.status(404).json({"status":false,'result':err})
         else res.json({status:true,result:users}) 
       });

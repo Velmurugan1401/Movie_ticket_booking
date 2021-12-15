@@ -17,6 +17,11 @@ const movieSchema = new Schema({
     trim: true,
     lowercase: true,
   },
+  seates: {
+    type: Number,
+    default:15
+   
+  },
   genre: {
     type: String,
     required: false,
@@ -25,19 +30,16 @@ const movieSchema = new Schema({
   },
   director: {
     type: String,
-    required: true,
     trim: true,
     lowercase: true,
   },
   cast: {
     type: String,
-    required: true,
     trim: true,
     lowercase: true,
   },
   description: {
     type: String,
-    required: true,
     trim: true,
     lowercase: true,
   },

@@ -2,3 +2,8 @@ header.masthead{
     background-image: url('./spiderman.jpg');
     height: 400px;
 }
+
+a{
+    color: #fff !important;
+    cursor: pointer;
+}
