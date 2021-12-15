@@ -1,6 +1,5 @@
 {
-  "proxy": "http://localhost:2022"
-   ,
+  "proxy": "http://localhost:2022",
   "name": "view",
   "version": "0.1.0",
   "private": true,
@@ -10,6 +9,7 @@
     "@testing-library/user-event": "^13.5.0",
     "bootstrap": "^5.1.3",
     "buffer": "^6.0.3",
+    "jquery": "^3.6.0",
     "mdbreact": "^5.2.0",
     "moment": "^2.29.1",
     "react": "^17.0.2",

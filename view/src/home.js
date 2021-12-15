@@ -1,24 +1,38 @@
-import react,{useState } from 'react'
+import React,{useState } from 'react'
 import './home.css'
 import image from './spiderman.jpg'
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import {Buffer} from 'buffer';
 import Movielist from './movielist'
+import { isDuration } from 'moment';
 
 var clss = 'd-none'
+let Name = React.createRef();
+let languages = React.createRef();
+
+let rdate = React.createRef();
+
+let duration = React.createRef();
+let enddate = React.createRef();
+let description = React.createRef();
+
+
 function Home()
 {
     const [show, setShow] = useState(false);
     // listmovies()
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+
+
     // console.log(window.sessionStorage.getItem('role'))
     if(window.sessionStorage.getItem('role')=='admin'){
 
         clss ='d-block'
     }
     sessioncheck(window.sessionStorage.getItem('token'))
+   
     // console.log()
     return(
        <div>
@@ -34,10 +48,7 @@ function Home()
                     <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
                         <li className={"nav-item "+clss}><a className="nav-link" onClick={handleShow}>Add Movies</a></li>
                         {/* <li className="nav-item" ><a className="nav-link" href="#services"></a></li> */}
-                        <li className="nav-item"><a className="nav-link" href="#portfolio">Portfolio</a></li>
-                        <li className="nav-item"><a className="nav-link" href="#about">About</a></li>
-                        <li className="nav-item"><a className="nav-link" href="#team">Team</a></li>
-                        <li className="nav-item"><a className="nav-link" href="#contact">Contact</a></li>
+                        
                     </ul>
                 </div>
             </div>
@@ -71,34 +82,38 @@ function Home()
         </section>
         <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
+          <Modal.Title>Add Movie</Modal.Title>
         </Modal.Header>
         <Modal.Body>
                 <form>
         <div class="form-row row">
             <div class="col-6">
             <lable>Movie Name</lable>
-            <input type="text" class="form-control" placeholder="" />
+            <input type="text" class="form-control"  placeholder="" ref={Name}  />
             </div>
             <div class="col-6">
             <lable>Language</lable>
-            <input type="text" class="form-control" placeholder="" />
+            <input type="text" class="form-control"  placeholder="" ref={languages}  />
             </div>
             <div class="col-6">
             <lable>Release Date</lable>
-            <input type="date" class="form-control" placeholder="" />
+            <input type="date" class="form-control"  placeholder="" ref={rdate}  />
             </div>
             <div class="col-6">
             <lable>Duration</lable>
-            <input type="text" class="form-control" placeholder="" />
+            <input type="text" class="form-control"  placeholder="" ref={duration}  />
             </div>
-            <div class="col-6">
+            {/* <div class="col-6">
             <lable>Image</lable>
             <input type="file" onChange={uploadinage} class="form-control image"  />
-            </div>
+            </div> */}
             <div class="col-6">
             <lable>End Date</lable>
-            <input type="Date" class="form-control"  />
+            <input type="Date" ref={enddate} class="form-control"  />
+            </div>
+            <div class="col-6">
+            <lable>Description</lable>
+            <input type="text" ref={description} class="form-control"  />
             </div>
             
         </div>
@@ -109,13 +124,55 @@ function Home()
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleClose}>
-            Save Changes
+          <Button variant="primary" onClick={addmovie} >
+            Add Movie
           </Button>
         </Modal.Footer>
       </Modal>
        </div>
     )
+}
+
+function addmovie(){
+    console.log()
+
+
+
+    var userobj={
+        title:Name.current.value,
+        language:languages.current.value,
+        duration:duration.current.value,
+        description:description.current.value,
+        endDate:enddate.current.value,
+        releaseDate:rdate.current.value,
+        image:'',
+        token:window.sessionStorage.getItem('token')
+
+
+    }
+    const header=new Headers({'Content-Type':'application/json'});
+    const requestOptions = {
+    method: 'POST',
+    headers: header,
+    body: JSON.stringify(userobj)
+    };
+    fetch('http://localhost:2022/api/movie/add',requestOptions)
+    .then(response => response.json())
+    .then(response => {
+    //    UserProfile.setName(response)
+    if(response.status){
+        // return true
+        alert("movie added successfully!")
+        window.location.href='/home'
+    // console.log(.email,"sucess")
+    }else {
+        alert(response.result)
+    // return false
+    }
+
+    // console.log(response)
+
+    })
 }
 
 

@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs'); //is a secured way to store passwords in my database
 const Tables = require('../Module/reservation');
+const Seatbook = require('../Module/showtime')
 
 
 var Reservation = function(){
@@ -20,6 +21,9 @@ Reservation.prototype.perforam = function(req,res){  //prototype is an object th
         case 'list':
             this.listall(req,res)
             break;
+        case 'listbooked':
+            this.listbookedseat(req,res)
+            break;
         case 'delete':
             this.delete(req,res)
             break;
@@ -37,6 +41,7 @@ Reservation.prototype.Insert =async function(req,res){
                     const user = new this.table(reqObj);
                     const savedUser = user.save().then(data=>{  
                         res.json({ status: true, result: data });
+                        this.seatbook(req,res)
                     })
                 
                 } catch (error) {
@@ -46,6 +51,38 @@ Reservation.prototype.Insert =async function(req,res){
         res.json({status:false,result:'please file required filed!'})
     }
 } 
+
+Reservation.prototype.seatbook = function(req,res){
+    var reqObj = req.body
+    if( reqObj.movieId){
+        this.table.find({movieId:req.body.movieId,timing:req.body.timing,date:req.body.date}, function(err, users) { 
+            var user = users[0]
+            if(err) {
+                // res.status(404).json({"status":false,'result':err})
+            }else if(user.length>0) {
+                var updateObj = user
+                updateObj['seates']=updateObj['seates'].concat(reqObj['seates'])
+                
+                delete updateObj['_id']
+                this.table.update({_id: user._id},updateObj , function(err,rawResponse) {
+                   //handle it
+                  
+                })
+                
+            }else{
+                const user = new Seatbook(reqObj);
+                    const savedUser = user.save().then(data=>{  
+                        // res.json({ status: true, result: data });
+                        
+                    })
+            }
+          });
+    }else{
+        // res.json({ststus:false,result:"Please file the required filed"})
+    }
+}
+
+
 
 Reservation.prototype.update = function(req,res){
     var reqObj = req.body
@@ -92,6 +129,13 @@ Reservation.prototype.listall = function(req,res){
       });
 }
 
+
+Reservation.prototype.listbookedseat = function(req,res){
+    Seatbook.findOne({movieId:req.body.movieId,timing:req.body.timing,date:req.body.date}, function(err, users) { //it used to find the paticular data from mongodb it also used to list all the datas from db 
+        if(err) return res.status(404).json({"status":false,'result':err})
+        else res.json({status:true,result:users}) 
+      });
+}
 
 
 

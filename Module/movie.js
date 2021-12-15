@@ -8,6 +8,10 @@ const movieSchema = new Schema({
     trim: true,
     lowercase: true,
   },
+  seates: {
+    type: Number,
+    default:10
+  },
   image: {
     type: String,
   },
@@ -20,6 +24,11 @@ const movieSchema = new Schema({
   seates: {
     type: Number,
     default:15
+   
+  },
+   showtimes: {
+    type: String,
+    default:["07:00 am","10:00 am","01:00 pm","04:00 pm","07:00 pm","10:00 pm"]
    
   },
   genre: {

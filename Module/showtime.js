@@ -2,29 +2,26 @@ const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
 const showtimeSchema = new Schema({
-  startAt: {
-    type: String,
+  seates: {
+    type: Array,
     required: true,
     trim: true,
   },
-  startDate: {
+  date: {
     type: Date,
     required: true,
+    trim: true,
   },
-  endDate: {
-    type: Date,
+  timing: {
+    type: Number,
     required: true,
+    trim: true,
   },
   movieId: {
-    type: Schema.Types.ObjectId,
+    type: String,
     ref: 'Movie',
     required: true,
-  },
-  cinemaId: {
-    type: Schema.Types.ObjectId,
-    ref: 'Cinema',
-    required: true,
-  },
+  }
 });
 
 const Showtime = mongoose.model('Showtime', showtimeSchema);
